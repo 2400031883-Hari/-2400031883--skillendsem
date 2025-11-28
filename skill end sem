@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Student Birthday Reminder</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+    }
+
+    /* Toast style */
+    #toast {
+        visibility: hidden;
+        min-width: 300px;
+        margin-left: -150px;
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        border-radius: 8px;
+        padding: 14px;
+        position: fixed;
+        z-index: 1;
+        left: 50%;
+        bottom: 30px;
+        font-size: 18px;
+    }
+
+    #toast.show {
+        visibility: visible;
+        animation: fadein 0.5s, fadeout 0.5s 3s;
+    }
+
+    @keyframes fadein {
+        from {bottom: 0; opacity: 0;} 
+        to {bottom: 30px; opacity: 1;}
+    }
+
+    @keyframes fadeout {
+        from {bottom: 30px; opacity: 1;} 
+        to {bottom: 0; opacity: 0;}
+    }
+</style>
+</head>
+<body>
+
+<h2>🎂 Student Birthday Reminder</h2>
+
+<!-- Toast Notification -->
+<div id="toast"></div>
+
+<script>
+// Student birthday list
+const students = [
+    { name: "Rohit", dob: "2005-11-28" },
+    { name: "Sneha", dob: "2006-12-05" },
+    { name: "Amit", dob: "2005-11-28" },
+    { name: "Priya", dob: "2007-01-10" }
+];
+
+// Function to show toast
+function showToast(message) {
+    const toast = document.getElementById("toast");
+    toast.innerHTML = message;
+    toast.className = "show";
+    setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3500);
+}
+
+// Check for birthdays
+function checkBirthdays() {
+    const today = new Date();
+    const tMonth = today.getMonth() + 1;
+    const tDate = today.getDate();
+
+    let birthdayList = [];
+
+    students.forEach(student => {
+        const bday = new Date(student.dob);
+        if ((bday.getMonth() + 1) === tMonth && bday.getDate() === tDate) {
+            birthdayList.push(student.name);
+        }
+    });
+
+    if (birthdayList.length > 0) {
+        showToast("🎉 Today's Birthdays: " + birthdayList.join(", "));
+    } else {
+        showToast("No birthdays today.");
+    }
+}
+
+// Run function on page load
+window.onload = checkBirthdays;
+</script>
+
+</body>
+</html>
